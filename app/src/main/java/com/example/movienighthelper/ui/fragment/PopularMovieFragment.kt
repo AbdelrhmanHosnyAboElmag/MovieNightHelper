@@ -36,20 +36,41 @@ class PopularMovieFragment :
             when {
                 result?.isLoading == true -> {
                     Log.d(TAG, "observeViewModel:isLoading ")
+                    binding.progressBar.visibility = View.VISIBLE
                 }
 
                 !result?.error.isNullOrEmpty() -> {
                     Log.d(TAG, "observeViewModel:Error ${result?.error} ")
+                    binding.progressBar.visibility = View.GONE
                 }
 
                 else -> {
                     result?.PopularScreenState?.let {
                         Log.d(TAG, "observeViewModel:success ${result?.PopularScreenState} ")
+                        binding.progressBar.visibility = View.GONE
                         setupSocialMediaAdapter(it)
                     }
                 }
 
 
+            }
+        }
+
+        _viewModel.insertMovieWatchLater.observe(viewLifecycleOwner) { result ->
+            when {
+                !result?.error.isNullOrEmpty() -> {
+                    Toast.makeText(requireContext(), "Something Went wrong when insert in watchLater", Toast.LENGTH_SHORT).show()
+                }
+
+                else -> {
+                    result?.isWatchLater?.let {
+                        if(result.isWatchLater){
+                            Toast.makeText(requireContext(), "ADD!!!", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(requireContext(), "Remove!!!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
             }
         }
     }
@@ -58,8 +79,8 @@ class PopularMovieFragment :
         popularMovieAdapter =
             PopularMovieAdapter(popularMovieUi.resultPopularMovies, onSelectedItem = {
 
-            }, onWatchListClick = {
-                popularMovieAdapter.updateWatchList(it)
+            }, onWatchListClick = { data,isWatch->
+                _viewModel.insertWatchLater(data.id,isWatch)
             })
         binding.rvPopularMovie.adapter = popularMovieAdapter
     }

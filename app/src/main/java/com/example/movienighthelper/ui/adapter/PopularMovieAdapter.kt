@@ -11,7 +11,7 @@ import com.example.movienighthelper.ui.model.PopularMovieResultUi
 class PopularMovieAdapter(
     private val data: List<PopularMovieResultUi>,
     val onSelectedItem: (data: PopularMovieResultUi) -> Unit,
-    val onWatchListClick: (data: PopularMovieResultUi) -> Unit
+    val onWatchListClick: (data: PopularMovieResultUi,is_watch:Boolean) -> Unit
 ) : RecyclerView.Adapter<PopularMovieAdapter.PopularMovieViewHolder>() {
 
     var adapterData = data
@@ -48,14 +48,20 @@ class PopularMovieAdapter(
            onSelectedItem(adapterData[position])
         }
         holder.binding.iconWatchList.setOnClickListener {
-            onWatchListClick(adapterData[position])
+            if(holder.binding.iconWatchList.drawable.constantState == holder.itemView.resources.getDrawable(R.drawable.icon_watch_list_postive).constantState){
+                onWatchListClick(adapterData[position],false)
+                updateWatchList(adapterData[position],false)
+            }else{
+                onWatchListClick(adapterData[position],true)
+                updateWatchList(adapterData[position],true)
+            }
         }
     }
 
-    fun updateWatchList(data: PopularMovieResultUi) {
+    fun updateWatchList(data: PopularMovieResultUi, isWatchLater: Boolean) {
         val position = adapterData.indexOfFirst { it.id == data.id }
         if (position != -1) {
-            adapterData[position].is_watch_later = true
+            adapterData[position].is_watch_later = isWatchLater
             notifyItemChanged(position)
         }
     }

@@ -2,7 +2,7 @@ package com.example.movienighthelper.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.movienighthelper.data.local.database.MovieDatabase
+import com.example.movienighthelper.data.local.database.MovieWatchLaterDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,11 +16,11 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): MovieDatabase {
+    fun provideDatabase(@ApplicationContext context: Context): MovieWatchLaterDatabase {
         return Room.databaseBuilder(
             context.applicationContext,
-            MovieDatabase::class.java,
-            "asteroids"
+            MovieWatchLaterDatabase::class.java,
+            "watch_later_table"
         ).build()
     }
 
