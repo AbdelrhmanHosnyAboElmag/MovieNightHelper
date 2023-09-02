@@ -94,6 +94,7 @@ dependencies {
     //Dagger-Hilt dependency injection
     implementation 'com.google.dagger:hilt-android:2.47'
     kapt 'com.google.dagger:hilt-compiler:2.47'
+
     // Local unit tests
     testImplementation "androidx.test:core:1.5.0"
     testImplementation "junit:junit:4.13.2"
