@@ -37,7 +37,6 @@ class PopularMovieViewModel @Inject constructor(
         getPopularMovieUseCase().onEach { result ->
             when (result) {
                 is DataResult.Success -> {
-                    Log.d("Cascw", "loadPopularMovies:${movieWatchLater.value?.watchLater} ")
                     _popularMovie.value = result.data?.let { PopularMovieState(PopularScreenState =addUiWatchLaterToApiMovies(it,movieWatchLater.value?.watchLater)) }
                 }
 
@@ -56,17 +55,14 @@ class PopularMovieViewModel @Inject constructor(
         getSearchMoviesUseCase(query).onEach { result ->
             when (result) {
                 is DataResult.Success -> {
-                    Log.d("trcas", "onQueryTextSubmit2:${result.data} ")
                     _popularMovie.value = result.data?.let { PopularMovieState(PopularScreenState =addUiWatchLaterToApiMovies(it,movieWatchLater.value?.watchLater)) }
                 }
 
                 is DataResult.Loading -> {
-                    Log.d("trcas", "onQueryTextSubmit2:load ")
                     _popularMovie.value = PopularMovieState(isLoading = true)
                 }
 
                 is DataResult.Error -> {
-                    Log.d("trcas", "onQueryTextSubmit2:${result.message} ")
                     _popularMovie.value = result.message?.let { PopularMovieState(error = it) }
                 }
             }
