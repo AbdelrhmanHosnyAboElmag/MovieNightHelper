@@ -30,4 +30,10 @@ class MovieRepositoryImpl @Inject constructor(
             database.movieWatchLaterDao.getWatchLater()
         }
     }
+
+    override suspend fun getSearchMovies(query: String): PopularMovie {
+       return withContext(Dispatchers.IO) {
+            moviesApi.searchMovies(query).await()
+        }
+    }
 }

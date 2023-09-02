@@ -6,7 +6,7 @@ import com.example.movienighthelper.data.local.entity.WatchLaterEntity
 interface MovieRepository {
     suspend fun getPopularMovie(): PopularMovie
     suspend fun insertWatchLater(id:Long,is_watch:Boolean): Boolean
-
     suspend fun getWatchLater():MutableList<WatchLaterEntity>
+    suspend fun getSearchMovies(query: String):PopularMovie
 
 }

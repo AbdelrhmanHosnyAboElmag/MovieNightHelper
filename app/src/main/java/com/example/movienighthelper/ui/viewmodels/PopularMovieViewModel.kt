@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.movienighthelper.base.BaseViewModel
 import com.example.movienighthelper.domain.usecases.GetPopularMovies
+import com.example.movienighthelper.domain.usecases.GetSearchMoviesUseCase
 import com.example.movienighthelper.domain.usecases.GetWatchListUseCase
 import com.example.movienighthelper.domain.usecases.InsertWatchLaterUseCase
 import com.example.movienighthelper.ui.state.MovieInsertState
@@ -22,7 +23,8 @@ import javax.inject.Inject
 class PopularMovieViewModel @Inject constructor(
     private val getPopularMovieUseCase: GetPopularMovies,
     private val insertWatchLaterUseCase: InsertWatchLaterUseCase,
-    private val getWatchListUseCase: GetWatchListUseCase
+    private val getWatchListUseCase: GetWatchListUseCase,
+    private val getSearchMoviesUseCase: GetSearchMoviesUseCase
 ) : BaseViewModel() {
     private val _popularMovie = MutableLiveData<PopularMovieState?>()
     val popularMovie get() : LiveData<PopularMovieState?> = _popularMovie
@@ -44,6 +46,27 @@ class PopularMovieViewModel @Inject constructor(
                 }
 
                 is DataResult.Error -> {
+                    _popularMovie.value = result.message?.let { PopularMovieState(error = it) }
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun loadSearchMovies(query:String) {
+        getSearchMoviesUseCase(query).onEach { result ->
+            when (result) {
+                is DataResult.Success -> {
+                    Log.d("trcas", "onQueryTextSubmit2:${result.data} ")
+                    _popularMovie.value = result.data?.let { PopularMovieState(PopularScreenState =addUiWatchLaterToApiMovies(it,movieWatchLater.value?.watchLater)) }
+                }
+
+                is DataResult.Loading -> {
+                    Log.d("trcas", "onQueryTextSubmit2:load ")
+                    _popularMovie.value = PopularMovieState(isLoading = true)
+                }
+
+                is DataResult.Error -> {
+                    Log.d("trcas", "onQueryTextSubmit2:${result.message} ")
                     _popularMovie.value = result.message?.let { PopularMovieState(error = it) }
                 }
             }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import com.example.movienighthelper.base.BaseFragment
 import com.example.movienighthelper.databinding.FragmentPopularMovieBinding
@@ -11,12 +12,20 @@ import com.example.movienighthelper.ui.adapter.PopularMovieAdapter
 import com.example.movienighthelper.ui.model.PopularMovieUi
 import com.example.movienighthelper.ui.viewmodels.PopularMovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class PopularMovieFragment :
     BaseFragment<FragmentPopularMovieBinding>(FragmentPopularMovieBinding::inflate) {
     override val _viewModel: PopularMovieViewModel by activityViewModels()
     private lateinit var popularMovieAdapter: PopularMovieAdapter
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
+    private val searchDelayMillis = 1000L // 1 second delay
+
     override fun onReigsterClick() {
 
     }
@@ -24,6 +33,7 @@ class PopularMovieFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
+        performSearch()
     }
 
     override fun onResume() {
@@ -35,18 +45,16 @@ class PopularMovieFragment :
         _viewModel.popularMovie.observe(viewLifecycleOwner) { result ->
             when {
                 result?.isLoading == true -> {
-                    Log.d(TAG, "observeViewModel:isLoading ")
                     binding.progressBar.visibility = View.VISIBLE
                 }
 
                 !result?.error.isNullOrEmpty() -> {
-                    Log.d(TAG, "observeViewModel:Error ${result?.error} ")
                     binding.progressBar.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Error:${result?.error}", Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {
                     result?.PopularScreenState?.let {
-                        Log.d(TAG, "observeViewModel:success ${result?.PopularScreenState} ")
                         binding.progressBar.visibility = View.GONE
                         setupSocialMediaAdapter(it)
                     }
@@ -59,14 +67,18 @@ class PopularMovieFragment :
         _viewModel.insertMovieWatchLater.observe(viewLifecycleOwner) { result ->
             when {
                 !result?.error.isNullOrEmpty() -> {
-                    Toast.makeText(requireContext(), "Something Went wrong when insert in watchLater", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Something Went wrong when insert in watchLater",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
 
                 else -> {
                     result?.isWatchLater?.let {
-                        if(result.isWatchLater){
+                        if (result.isWatchLater) {
                             Toast.makeText(requireContext(), "ADD!!!", Toast.LENGTH_SHORT).show()
-                        }else{
+                        } else {
                             Toast.makeText(requireContext(), "Remove!!!", Toast.LENGTH_SHORT).show()
                         }
                     }
@@ -79,10 +91,46 @@ class PopularMovieFragment :
         popularMovieAdapter =
             PopularMovieAdapter(popularMovieUi.resultPopularMovies, onSelectedItem = {
 
-            }, onWatchListClick = { data,isWatch->
-                _viewModel.insertWatchLater(data.id,isWatch)
+            }, onWatchListClick = { data, isWatch ->
+                _viewModel.insertWatchLater(data.id, isWatch)
             })
         binding.rvPopularMovie.adapter = popularMovieAdapter
+    }
+
+    private fun performSearch() {
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                query?.let {
+                    if (it.isNullOrEmpty()) {
+                        _viewModel.loadPopularMovies()
+                    } else {
+                        _viewModel.loadSearchMovies(it)
+                    }
+                }
+
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                coroutineScope.coroutineContext.cancelChildren()
+                coroutineScope.launch {
+                    delay(searchDelayMillis)
+                    newText?.let {
+                        if (it.isNullOrEmpty()) {
+                            _viewModel.loadPopularMovies()
+                        } else {
+                            _viewModel.loadSearchMovies(it)
+                        }
+                    }
+                }
+                return true
+            }
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.coroutineContext.cancelChildren() // Cancel any ongoing jobs when the activity is destroyed
     }
 
     companion object {
