@@ -27,7 +27,7 @@ class PopularMovieViewModel @Inject constructor(
         getPopularMovieUseCase().onEach { result ->
             when (result) {
                 is DataResult.Success -> {
-                    _popularMovie.value = result.data?.let { PopularMovieState(PopularScreenState = it) }
+                    _popularMovie.value = result.data?.let { PopularMovieState(PopularScreenState = it.toUiModel()) }
                 }
 
                 is DataResult.Loading -> {

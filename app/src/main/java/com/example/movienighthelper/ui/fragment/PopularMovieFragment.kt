@@ -3,15 +3,20 @@ package com.example.movienighthelper.ui.fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.movienighthelper.base.BaseFragment
 import com.example.movienighthelper.databinding.FragmentPopularMovieBinding
+import com.example.movienighthelper.ui.adapter.PopularMovieAdapter
+import com.example.movienighthelper.ui.model.PopularMovieUi
 import com.example.movienighthelper.ui.viewmodels.PopularMovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class PopularMovieFragment: BaseFragment<FragmentPopularMovieBinding>(FragmentPopularMovieBinding::inflate) {
+class PopularMovieFragment :
+    BaseFragment<FragmentPopularMovieBinding>(FragmentPopularMovieBinding::inflate) {
     override val _viewModel: PopularMovieViewModel by activityViewModels()
+    private lateinit var popularMovieAdapter: PopularMovieAdapter
     override fun onReigsterClick() {
 
     }
@@ -39,7 +44,8 @@ class PopularMovieFragment: BaseFragment<FragmentPopularMovieBinding>(FragmentPo
 
                 else -> {
                     result?.PopularScreenState?.let {
-                        Log.d(TAG, "observeViewModel:${it}")
+                        Log.d(TAG, "observeViewModel:success ${result?.PopularScreenState} ")
+                        setupSocialMediaAdapter(it)
                     }
                 }
 
@@ -47,7 +53,18 @@ class PopularMovieFragment: BaseFragment<FragmentPopularMovieBinding>(FragmentPo
             }
         }
     }
+
+    private fun setupSocialMediaAdapter(popularMovieUi: PopularMovieUi) {
+        popularMovieAdapter =
+            PopularMovieAdapter(popularMovieUi.resultPopularMovies, onSelectedItem = {
+
+            }, onWatchListClick = {
+                popularMovieAdapter.updateWatchList(it)
+            })
+        binding.rvPopularMovie.adapter = popularMovieAdapter
+    }
+
     companion object {
-        val TAG ="POPULAR_MOVIE_FRAMGNET_LOG"
+        val TAG = "POPULAR_MOVIE_FRAMGNET_LOG"
     }
 }
