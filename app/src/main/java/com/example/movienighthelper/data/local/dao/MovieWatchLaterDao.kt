@@ -14,5 +14,5 @@ interface MovieWatchLaterDao {
     fun insertAll(movieWatchLater: WatchLaterEntity)
 
     @Query("SELECT * FROM watchlaterentity WHERE id = :entityId")
-    fun getEntityById(entityId: Long): WatchLaterEntity?
+    fun getEntityById(entityId: Int): WatchLaterEntity?
 }

@@ -30,6 +30,7 @@ class PopularMovieViewModel @Inject constructor(
     val popularMovie get() : LiveData<PopularMovieState?> = _popularMovie
 
     init {
+        Log.d("ersdfads", ":1 ")
         loadWatchLater()
     }
 
@@ -72,7 +73,7 @@ class PopularMovieViewModel @Inject constructor(
     private val _insertMovieWatchLater = MutableLiveData<MovieInsertState?>()
     val insertMovieWatchLater get() : LiveData<MovieInsertState?> = _insertMovieWatchLater
 
-    fun insertWatchLater(id:Long,is_watch:Boolean){
+    fun insertWatchLater(id:Int,is_watch:Boolean){
         insertWatchLaterUseCase(id, is_watch).onEach { result ->
             when (result) {
                 is DataResult.Success -> {

@@ -4,7 +4,7 @@ import com.example.movienighthelper.ui.model.PopularMovieResultUi
 import com.example.movienighthelper.utils.ConvertibleTo
 
 data class ResultPopularMovie(
-    val id: Long,
+    val id: Int,
     val original_title: String,
     val overview: String,
     val poster_path: String?,

@@ -10,7 +10,7 @@ import com.example.movienighthelper.ui.model.PopularMovieResultUi
 
 class PopularMovieAdapter(
     private val data: List<PopularMovieResultUi>,
-    val onSelectedItem: (data: PopularMovieResultUi) -> Unit,
+    val onSelectedItem: (data: PopularMovieResultUi,is_watch:Boolean) -> Unit,
     val onWatchListClick: (data: PopularMovieResultUi,is_watch:Boolean) -> Unit
 ) : RecyclerView.Adapter<PopularMovieAdapter.PopularMovieViewHolder>() {
 
@@ -45,7 +45,11 @@ class PopularMovieAdapter(
     override fun onBindViewHolder(holder: PopularMovieViewHolder, position: Int) {
         holder.setData(adapterData[position])
         holder.binding.listItem.setOnClickListener {
-           onSelectedItem(adapterData[position])
+            if(holder.binding.iconWatchList.drawable.constantState == holder.itemView.resources.getDrawable(R.drawable.icon_watch_list_postive).constantState) {
+                onSelectedItem(adapterData[position],true)
+            }else{
+                onSelectedItem(adapterData[position],false)
+            }
         }
         holder.binding.iconWatchList.setOnClickListener {
             if(holder.binding.iconWatchList.drawable.constantState == holder.itemView.resources.getDrawable(R.drawable.icon_watch_list_postive).constantState){

@@ -21,7 +21,7 @@ class InsertWatchLaterUseCaseTest{
     @Test
     fun `get movie watch later false`() = runBlocking {
         fakeRepository.insertSimulate = false
-        val result = getRepo.invoke(1L,false)
+        val result = getRepo.invoke(1,false)
         result.collect { dataResult ->
             when (dataResult) {
                 is DataResult.Success -> {
@@ -37,8 +37,8 @@ class InsertWatchLaterUseCaseTest{
     @Test
     fun `get movie watch later Error`() = runBlocking {
         fakeRepository.throwError = true
-        fakeRepository.watchLaterEntity = mutableListOf(WatchLaterEntity(1L,true))
-        val result = getRepo.invoke(1L,true)
+        fakeRepository.watchLaterEntity = mutableListOf(WatchLaterEntity(1,true))
+        val result = getRepo.invoke(1,true)
 
         result.collect { dataResult ->
             when (dataResult) {

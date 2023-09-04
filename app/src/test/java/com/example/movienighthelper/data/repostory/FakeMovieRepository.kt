@@ -1,6 +1,11 @@
 package com.example.movienighthelper.data.repostory
 
+import com.example.movienighthelper.data.api.response.Cast
+import com.example.movienighthelper.data.api.response.CastMovie
+import com.example.movienighthelper.data.api.response.Crew
+import com.example.movienighthelper.data.api.response.MovieDetail
 import com.example.movienighthelper.data.api.response.PopularMovie
+import com.example.movienighthelper.data.api.response.SimilarMovie
 import com.example.movienighthelper.data.local.entity.WatchLaterEntity
 import com.example.movienighthelper.data.repository.MovieRepository
 
@@ -17,7 +22,7 @@ class FakeMovieRepository : MovieRepository {
         return PopularMovieList
     }
 
-    override suspend fun insertWatchLater(id: Long, is_watch: Boolean): Boolean {
+    override suspend fun insertWatchLater(id: Int, is_watch: Boolean): Boolean {
         return insertSimulate
     }
 
@@ -34,4 +39,26 @@ class FakeMovieRepository : MovieRepository {
         }
         return PopularMovieList
     }
+
+    override suspend fun getMovieDetails(movieId: Int): MovieDetail {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMovieSimilar(movieId: Int): SimilarMovie {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun getMovieCast(movieId: Int): Pair<List<Cast>, List<Crew>> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun filterActor(cast: List<Cast>): List<Cast> {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun filterCrew(crew: List<Crew>): List<Crew> {
+        TODO("Not yet implemented")
+    }
+
+
 }

@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class InsertWatchLaterUseCase @Inject constructor(private val MovieRepositoryImpl: MovieRepository) {
-    operator fun invoke(id:Long,is_watch:Boolean): Flow<DataResult<Boolean>> = flow {
+    operator fun invoke(id:Int,is_watch:Boolean): Flow<DataResult<Boolean>> = flow {
         try {
             emit(DataResult.Loading())
             val repo = MovieRepositoryImpl.insertWatchLater(id, is_watch)

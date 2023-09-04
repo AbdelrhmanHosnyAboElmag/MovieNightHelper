@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import com.example.movienighthelper.base.BaseFragment
 import com.example.movienighthelper.databinding.FragmentPopularMovieBinding
 import com.example.movienighthelper.ui.adapter.PopularMovieAdapter
@@ -21,7 +23,7 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class PopularMovieFragment :
     BaseFragment<FragmentPopularMovieBinding>(FragmentPopularMovieBinding::inflate) {
-    override val _viewModel: PopularMovieViewModel by activityViewModels()
+    override val _viewModel: PopularMovieViewModel by viewModels()
     private lateinit var popularMovieAdapter: PopularMovieAdapter
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
     private val searchDelayMillis = 1000L // 1 second delay
@@ -89,8 +91,8 @@ class PopularMovieFragment :
 
     private fun setupSocialMediaAdapter(popularMovieUi: PopularMovieUi) {
         popularMovieAdapter =
-            PopularMovieAdapter(popularMovieUi.resultPopularMovies, onSelectedItem = {
-
+            PopularMovieAdapter(popularMovieUi.resultPopularMovies, onSelectedItem = { data, isWatch->
+                _viewModel.navigateTo(PopularMovieFragmentDirections.actionPopularMovieFragmentToDetailMovieFragment(data.id,isWatch))
             }, onWatchListClick = { data, isWatch ->
                 _viewModel.insertWatchLater(data.id, isWatch)
             })
@@ -102,9 +104,10 @@ class PopularMovieFragment :
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let {
                     if (it.isNullOrEmpty()) {
-                        _viewModel.loadPopularMovies()
+                        _viewModel.loadWatchLater()
+                        Log.d("ersdfads", ":2")
                     } else {
-                        _viewModel.loadSearchMovies(it)
+                        _viewModel.loadWatchLater()
                     }
                 }
 
@@ -117,9 +120,9 @@ class PopularMovieFragment :
                     delay(searchDelayMillis)
                     newText?.let {
                         if (it.isNullOrEmpty()) {
-                            _viewModel.loadPopularMovies()
+                            _viewModel.loadWatchLater()
                         } else {
-                            _viewModel.loadSearchMovies(it)
+                            _viewModel.loadWatchLater()
                         }
                     }
                 }

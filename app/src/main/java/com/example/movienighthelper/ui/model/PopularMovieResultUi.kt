@@ -3,7 +3,7 @@ package com.example.movienighthelper.ui.model
 import com.example.movienighthelper.data.api.response.ResultPopularMovie
 
 data class PopularMovieResultUi(
-    val id: Long,
+    val id: Int,
     val original_title: String,
     val overview: String,
     val poster_path: String?,

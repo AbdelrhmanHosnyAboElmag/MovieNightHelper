@@ -6,5 +6,22 @@
     <fragment
         android:id="@+id/popularMovieFragment"
         android:name="com.example.movienighthelper.ui.fragment.PopularMovieFragment"
-        android:label="PopularMovieFragment" />
+        android:label="PopularMovieFragment" >
+        <action
+            android:id="@+id/action_popularMovieFragment_to_detailMovieFragment"
+            app:destination="@id/detailMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailMovieFragment"
+        android:name="com.example.movienighthelper.ui.fragment.DetailMovieFragment"
+        android:label="DetailMovieFragment" >
+        <argument
+            android:name="movie_id"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="isWatch"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
 </navigation>

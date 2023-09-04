@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity
 data class WatchLaterEntity(
     @PrimaryKey(autoGenerate = false)
-    val id: Long ,
+    val id: Int ,
     val is_watch_later:Boolean = false
 )
