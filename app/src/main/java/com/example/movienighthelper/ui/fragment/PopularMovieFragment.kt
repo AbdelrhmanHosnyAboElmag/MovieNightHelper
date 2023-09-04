@@ -58,7 +58,14 @@ class PopularMovieFragment :
                 else -> {
                     result?.PopularScreenState?.let {
                         binding.progressBar.visibility = View.GONE
-                        setupSocialMediaAdapter(it)
+                        if(!it.resultPopularMovies.isNullOrEmpty()){
+                            binding.imgNoResult.visibility = View.GONE
+                            binding.rvPopularMovie.visibility = View.VISIBLE
+                            setupSocialMediaAdapter(it)
+                        }else{
+                            binding.imgNoResult.visibility = View.VISIBLE
+                            binding.rvPopularMovie.visibility = View.GONE
+                        }
                     }
                 }
 
