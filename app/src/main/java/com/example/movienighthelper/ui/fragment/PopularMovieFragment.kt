@@ -107,7 +107,7 @@ class PopularMovieFragment :
                         _viewModel.loadWatchLater()
                         Log.d("ersdfads", ":2")
                     } else {
-                        _viewModel.loadWatchLater()
+                        _viewModel.loadSearchMovies(it)
                     }
                 }
 
@@ -122,7 +122,7 @@ class PopularMovieFragment :
                         if (it.isNullOrEmpty()) {
                             _viewModel.loadWatchLater()
                         } else {
-                            _viewModel.loadWatchLater()
+                            _viewModel.loadSearchMovies(it)
                         }
                     }
                 }
