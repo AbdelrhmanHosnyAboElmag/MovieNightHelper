@@ -19,31 +19,19 @@ Get detailed information about movies, including cast, crew, ratings, reviews, a
 
 Create your own watchlist and keep track of movies you want to watch later. Never forget about that movie you've been wanting to see!
 
-### 4. Genre Filtering
-
-Filter movies by genre to find the perfect movie for your mood. Whether you're in the mood for comedy, action, romance, or horror, Movie Night Helper has you covered.
-
-### 5. User Profiles
-
-Create user profiles for you and your friends or family members. Customize movie recommendations based on each profile's preferences.
-
-### 6. Planning Movie Nights
-
-Plan movie nights with your friends and family. Schedule dates, invite guests, and keep everyone updated on the movie selections.
-
-### 7. Clean Architecture with MVVM
+### 4. Clean Architecture with MVVM
 
 Movie Night Helper follows a clean architecture pattern with a Model-View-ViewModel (MVVM) design. This ensures maintainability, separation of concerns, and testability, making the codebase organized and understandable.
 
-### 8. Unit Testing
+### 5. Unit Testing
 
 The app includes unit tests for ViewModel and UseCases to ensure code quality and reliability.
 
-### 9. Integration Testing
+### 6. Integration Testing
 
 Comprehensive integration tests guarantee that all app components, including database operations, work seamlessly together.
 
-### 10. Navigation Component
+### 7. Navigation Component
 
 Movie Night Helper uses the Android Navigation Component to provide a smooth and intuitive navigation experience throughout the app.
 
@@ -54,7 +42,7 @@ To get started with Movie Night Helper:
 1. Clone the repository to your local machine.
 2. Open the project in Android Studio.
 3. Build and run the app on your Android device or emulator.
-4. Create a user profile, explore movie recommendations, and start planning your movie night!
+
 
 ## Contributions
 
