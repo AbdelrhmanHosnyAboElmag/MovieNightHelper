@@ -38,17 +38,17 @@ class MovieWatchLaterDaoTest  {
     @Test
     fun insertWatchLater() = runTest {
         val repoItem = WatchLaterEntity(
-            id = 1L,
+            id = 1,
             is_watch_later = true
         )
         dao.insertAll(repoItem)
-        assertThat(dao.getEntityById(1L)).isEqualTo(repoItem)
+        assertThat(dao.getEntityById(1)).isEqualTo(repoItem)
     }
 
     @Test
     fun getWatchLater() = runTest {
         val repoItem = WatchLaterEntity(
-            id = 1L,
+            id = 1,
             is_watch_later = true
         )
         dao.insertAll(repoItem)
